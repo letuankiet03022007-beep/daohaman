@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Đề Thi Trắc Nghiệm - Đạo Hàm Hàm Ẩn</title>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+<style>
+    *{
+        box-sizing:border-box;
+    }
+
+    body{
+        margin:0;
+        padding:20px;
+        font-family:Arial, sans-serif;
+        background:#f2f5f9;
+        color:#222;
+        line-height:1.6;
+    }
+
+    .container{
+        max-width:1200px;
+        margin:auto;
+    }
+
+    h1{
+        text-align:center;
+        color:#004a99;
+    }
+
+    .intro{
+        background:white;
+        padding:20px;
+        border-radius:12px;
+        margin-bottom:25px;
+        box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .section-title{
+        margin-top:40px;
+        color:#b30059;
+        border-left:6px solid #004a99;
+        padding-left:12px;
+    }
+
+    .question{
+        background:white;
+        margin-top:20px;
+        padding:20px;
+        border-radius:12px;
+        box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .question h3{
+        margin-top:0;
+        color:#004a99;
+    }
+
+    .option{
+        border:2px solid #dcdcdc;
+        border-radius:10px;
+        padding:12px;
+        margin:10px 0;
+        cursor:pointer;
+        transition:0.3s;
+        background:#fafafa;
+    }
+
+    .option:hover{
+        background:#eef5ff;
+    }
+
+    .correct{
+        background:#d4edda !important;
+        border-color:#28a745 !important;
+        color:#155724;
+    }
+
+    .wrong{
+        background:#f8d7da !important;
+        border-color:#dc3545 !important;
+        color:#721c24;
+    }
+
+    .disabled{
+        pointer-events:none;
+    }
+
+    .explanation{
+        display:none;
+        margin-top:15px;
+        padding:15px;
+        border-left:5px solid #004a99;
+        background:#eef5ff;
+        border-radius:8px;
+    }
+
+    .tip{
+        margin-top:10px;
+        padding:10px;
+        background:#fff3cd;
+        border-left:5px solid #ff9800;
+        border-radius:8px;
+    }
+
+    .score-board{
+        position:sticky;
+        top:10px;
+        background:#004a99;
+        color:white;
+        padding:15px;
+        border-radius:10px;
+        text-align:center;
+        font-size:20px;
+        margin-bottom:20px;
+        z-index:999;
+    }
+
+    .footer{
+        margin-top:50px;
+        text-align:center;
+        color:#666;
+    }
+
+    .download-btn{
+        display:inline-block;
+        margin-top:15px;
+        background:#28a745;
+        color:white;
+        padding:12px 20px;
+        border-radius:10px;
+        text-decoration:none;
+        font-weight:bold;
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="score-board">
+    Điểm hiện tại: <span id="score">0</span> / 20
+</div>
+
+<h1>ĐỀ THI TRẮC NGHIỆM TƯƠNG TÁC<br>ĐẠO HÀM HÀM ẨN</h1>
+
+<div class="intro">
+    <h2>Mô tả</h2>
+
+    <ul>
+        <li>20 câu hỏi trắc nghiệm tương tác.</li>
+        <li>5 câu lý thuyết.</li>
+        <li>15 câu bài tập:
+            <ul>
+                <li>5 câu dễ</li>
+                <li>5 câu trung bình</li>
+                <li>5 câu khó</li>
+            </ul>
+        </li>
+
+        <li>Bấm đáp án đúng → hiện xanh.</li>
+        <li>Bấm đáp án sai → hiện đỏ.</li>
+        <li>Sau khi chọn sẽ hiện:
+            <ul>
+                <li>Đáp án đúng</li>
+                <li>Lời giải chi tiết</li>
+                <li>Mẹo làm nhanh</li>
+            </ul>
+        </li>
+
+        <li>Hỗ trợ công thức toán bằng MathJax.</li>
+    </ul>
+
+    <a class="download-btn" id="downloadBtn">
+        Tải file HTML
+    </a>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="footer">
+    <h3>Hoàn thành bài thi đạo hàm hàm ẩn</h3>
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+/* =========================
+   LÝ THUYẾT
+========================= */
+
+{
+type:"Lý thuyết",
+question:"Hàm ẩn có dạng nào sau đây?",
+options:[
+"\\(y = f(x)\\)",
+"\\(f(x,y)=0\\)",
+"\\(x = 2\\)",
+"\\(y = mx+b\\)"
+],
+answer:1,
+explanation:"Hàm ẩn là hàm mà x và y lẫn với nhau trong cùng một phương trình.",
+tip:"Nhìn xem x và y có bị 'quấn vào nhau' không."
+},
+
+{
+type:"Lý thuyết",
+question:"Khi đạo hàm \\(y^5\\) theo \\(x\\), kết quả là:",
+options:[
+"\\(5y^4\\)",
+"\\(5y^4y'\\)",
+"\\(y^5y'\\)",
+"\\(5x^4\\)"
+],
+answer:1,
+explanation:"Vì y là hàm của x nên phải dùng quy tắc chuỗi.",
+tip:"Cứ thấy y có số mũ → nhớ nhân thêm y'."
+},
+
+{
+type:"Lý thuyết",
+question:"Đạo hàm của tích \\(xy\\) là:",
+options:[
+"\\(x'y'\\)",
+"\\(xy'\\)",
+"\\(x'y\\)",
+"\\(x'y + xy'\\)"
+],
+answer:3,
+explanation:"Áp dụng quy tắc tích.",
+tip:"Đạo hàm tích = đạo hàm trước nhân sau + trước nhân đạo hàm sau."
+},
+
+{
+type:"Lý thuyết",
+question:"Bước thứ hai trong phương pháp đạo hàm hàm ẩn là gì?",
+options:[
+"Tính tích phân",
+"Nhóm các số hạng chứa y'",
+"Đổi biến",
+"Khai triển nhị thức"
+],
+answer:1,
+explanation:"Sau khi đạo hàm hai vế cần gom các số hạng chứa y'.",
+tip:"Luôn gom y' về cùng một phía."
+},
+
+{
+type:"Lý thuyết",
+question:"Sai lầm phổ biến nhất khi làm đạo hàm hàm ẩn là:",
+options:[
+"Quên đổi biến",
+"Quên quy tắc tích",
+"Quên nhân thêm y'",
+"Đạo hàm sai hằng số"
+],
+answer:2,
+explanation:"Nhiều người quên y là hàm của x.",
+tip:"Thấy y → nghĩ ngay đến y'."
+},
+
+/* =========================
+   DỄ
+========================= */
+
+{
+type:"Dễ",
+question:"Cho \\(x^2+y^2=25\\). Tìm \\(y'\\).",
+options:[
+"\\(\\frac{x}{y}\\)",
+"\\(-\\frac{x}{y}\\)",
+"\\(-\\frac{y}{x}\\)",
+"\\(\\frac{y}{x}\\)"
+],
+answer:1,
+explanation:"Đạo hàm: \\(2x+2yy'=0\\Rightarrow y'=-\\frac{x}{y}\\)",
+tip:"Đường tròn luôn ra dạng \\(-x/y\\)."
+},
+
+{
+type:"Dễ",
+question:"Đạo hàm của \\(y^3\\) là:",
+options:[
+"\\(3y^2\\)",
+"\\(3y^2y'\\)",
+"\\(y^3y'\\)",
+"\\(6y\\)"
+],
+answer:1,
+explanation:"Áp dụng quy tắc chuỗi.",
+tip:"Lũy thừa của y luôn có y'."
+},
+
+{
+type:"Dễ",
+question:"Đạo hàm của \\(x^2y\\) là:",
+options:[
+"\\(2xy\\)",
+"\\(x^2y'\\)",
+"\\(2xy+x^2y'\\)",
+"\\(2xy'\\)"
+],
+answer:2,
+explanation:"Dùng quy tắc tích.",
+tip:"Đạo hàm từng phần một."
+},
+
+{
+type:"Dễ",
+question:"Đạo hàm của \\(xy^2\\) là:",
+options:[
+"\\(y^2\\)",
+"\\(2xyy'\\)",
+"\\(y^2+2xyy'\\)",
+"\\(2y\\)"
+],
+answer:2,
+explanation:"Áp dụng quy tắc tích.",
+tip:"Đừng quên đạo hàm của y²."
+},
+
+{
+type:"Dễ",
+question:"\\(\\frac{d}{dx}(1)=?\\)",
+options:[
+"1",
+"x",
+"0",
+"Không xác định"
+],
+answer:2,
+explanation:"Đạo hàm hằng số bằng 0.",
+tip:"Số đứng yên → đạo hàm bằng 0."
+},
+
+/* =========================
+   TRUNG BÌNH
+========================= */
+
+{
+type:"Trung bình",
+question:"Cho \\(x^2+xy+y^2=7\\). Đạo hàm của \\(xy\\) là:",
+options:[
+"\\(x+y\\)",
+"\\(xy'\\)",
+"\\(x'y+xy'\\)",
+"\\(y+xy'\\)"
+],
+answer:3,
+explanation:"Vì x'=1 nên: y + xy'.",
+tip:"x đạo hàm thành 1."
+},
+
+{
+type:"Trung bình",
+question:"Cho \\(x^3+y^3=9\\). Sau khi đạo hàm thu được:",
+options:[
+"\\(3x^2+3y^2=0\\)",
+"\\(3x^2+3y^2y'=0\\)",
+"\\(x^2+y^2=0\\)",
+"\\(3x+3y=0\\)"
+],
+answer:1,
+explanation:"Đạo hàm y³ cần nhân y'.",
+tip:"Luôn để ý y'."
+},
+
+{
+type:"Trung bình",
+question:"Cho \\(x^2+y^2=16\\). Tại điểm \\((0,4)\\), y' bằng:",
+options:[
+"0",
+"1",
+"-1",
+"4"
+],
+answer:0,
+explanation:"\\(y'=-x/y=-0/4=0\\)",
+tip:"Nếu x=0 thì tử số bằng 0."
+},
+
+{
+type:"Trung bình",
+question:"Đạo hàm của \\(\\sin(y)\\) là:",
+options:[
+"\\(\\cos(y)\\)",
+"\\(\\cos(y)y'\\)",
+"\\(\\sin(y)y'\\)",
+"\\(y\\cos(y)\\)"
+],
+answer:1,
+explanation:"Áp dụng quy tắc chuỗi.",
+tip:"Hàm lượng giác của y luôn nhân y'."
+},
+
+{
+type:"Trung bình",
+question:"Đạo hàm của \\(e^y\\) là:",
+options:[
+"\\(e^y\\)",
+"\\(ye^y\\)",
+"\\(e^yy'\\)",
+"\\(e^x\\)"
+],
+answer:2,
+explanation:"Quy tắc chuỗi.",
+tip:"Hàm mũ chứa y → thêm y'."
+},
+
+/* =========================
+   KHÓ
+========================= */
+
+{
+type:"Khó",
+question:"Cho \\(x^2+y^2=1\\). Tìm y'' tại điểm \\((0,1)\\).",
+options:[
+"-1",
+"0",
+"1",
+"2"
+],
+answer:0,
+explanation:"\\(y'=-x/y\\). Tiếp tục đạo hàm được \\(y''=-1\\) tại (0,1).",
+tip:"Đường tròn đơn vị tại đỉnh trên luôn cong xuống."
+},
+
+{
+type:"Khó",
+question:"Cho \\(x^3+y^3=6xy\\). Sau khi nhóm y', hệ số của y' là:",
+options:[
+"\\(3x^2\\)",
+"\\(3y^2-6x\\)",
+"\\(3y^2+6x\\)",
+"\\(6y\\)"
+],
+answer:1,
+explanation:"Đạo hàm: \\(3x^2+3y^2y'=6y+6xy'\\). Chuyển vế → \\(3y^2-6x\\).",
+tip:"Luôn chuyển các số chứa y' về cùng một phía."
+},
+
+{
+type:"Khó",
+question:"Đạo hàm của \\(\\ln(y)\\) là:",
+options:[
+"\\(1/y\\)",
+"\\(y'/y\\)",
+"\\(\\ln(y)y'\\)",
+"\\(1/x\\)"
+],
+answer:1,
+explanation:"Áp dụng quy tắc chuỗi.",
+tip:"ln(y) → y'/y."
+},
+
+{
+type:"Khó",
+question:"Cho \\(x^2+xy+y^2=3\\). Tìm y' tại điểm \\((1,1)\\).",
+options:[
+"-1",
+"0",
+"1",
+"2"
+],
+answer:0,
+explanation:"Đạo hàm: \\(2x+y+xy'+2yy'=0\\). Thay (1,1): \\(2+1+3y'=0\\Rightarrow y'=-1\\)",
+tip:"Sau khi đạo hàm hãy thay tọa độ ngay."
+},
+
+{
+type:"Khó",
+question:"Cho \\(x^2+y^2=25\\). Tiếp tuyến tại điểm \\((3,4)\\) có hệ số góc:",
+options:[
+"\\(-3/4\\)",
+"\\(3/4\\)",
+"\\(-4/3\\)",
+"\\(4/3\\)"
+],
+answer:0,
+explanation:"\\(y'=-x/y=-3/4\\)",
+tip:"Hệ số góc tiếp tuyến = y'."
+}
+
+];
+
+const quiz = document.getElementById("quiz");
+const scoreElement = document.getElementById("score");
+
+let score = 0;
+
+questions.forEach((q,index)=>{
+
+    const div = document.createElement("div");
+    div.className = "question";
+
+    div.innerHTML = `
+        <h3>Câu ${index+1} (${q.type})</h3>
+        <p>${q.question}</p>
+
+        <div class="options">
+            ${q.options.map((opt,i)=>
+                `<div class="option" data-index="${i}">
+                    ${String.fromCharCode(65+i)}. ${opt}
+                </div>`
+            ).join("")}
+        </div>
+
+        <div class="explanation">
+            <strong>Đáp án đúng:</strong> ${String.fromCharCode(65+q.answer)}
+            <br><br>
+            <strong>Giải thích:</strong> ${q.explanation}
+
+            <div class="tip">
+                <strong>Mẹo làm nhanh:</strong> ${q.tip}
+            </div>
+        </div>
+    `;
+
+    const options = div.querySelectorAll(".option");
+    const explanation = div.querySelector(".explanation");
+
+    options.forEach(option=>{
+
+        option.addEventListener("click",()=>{
+
+            const selected = parseInt(option.dataset.index);
+
+            options.forEach(o=>o.classList.add("disabled"));
+
+            if(selected===q.answer){
+                option.classList.add("correct");
+                score++;
+                scoreElement.innerText = score;
+            }else{
+                option.classList.add("wrong");
+                options[q.answer].classList.add("correct");
+            }
+
+            explanation.style.display="block";
+
+            if(window.MathJax){
+                MathJax.typesetPromise();
+            }
+
+        });
+
+    });
+
+    quiz.appendChild(div);
+
+});
+
+if(window.MathJax){
+    MathJax.typesetPromise();
+}
+
+/* DOWNLOAD HTML */
+
+document.getElementById("downloadBtn").addEventListener("click",()=>{
+
+    const htmlContent = document.documentElement.outerHTML;
+
+    const blob = new Blob([htmlContent],{
+        type:"text/html"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+
+    a.href = url;
+
+    a.download = "de-thi-dao-ham-ham-an.html";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+});
+
+</script>
+
+</body>
+</html>
